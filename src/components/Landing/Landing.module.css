@@ -1,4 +1,4 @@
-.App {
+.Landing {
   text-align: center;
 }
 
@@ -9,18 +9,18 @@
   height: 80vh;
 }
 
-.empty-state {
+.emptyState {
   text-align: center;
 }
 
-.empty-state img {
+.emptyState img {
   width: 200px;
 }
 
-.empty-state h2 {
+.emptyState h2 {
   margin: 20px 0;
 }
 
-.empty-state p {
+.emptyState p {
   color: gray;
 }
