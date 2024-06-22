@@ -1,11 +1,21 @@
-// src/components/LinkItem/LinkItem.jsx
 import React from 'react';
+import { useDrag } from 'react-dnd';
 import { FaLink, FaEllipsisV } from 'react-icons/fa';
 import styles from './LinkItem.module.css';
 
-const LinkItem = ({ link, onEdit, onDelete }) => {
+const LinkItem = ({ link, onEdit, onDelete, isPartOfModule }) => {
+  const [{ isDragging }, drag] = useDrag({
+    type: 'link',
+    item: { id: link.id, type: 'link' },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  const opacity = isDragging ? 0.4 : 1;
+
   return (
-    <div className={styles.linkItem}>
+    <div ref={!isPartOfModule ? drag : null} className={styles.linkItem} style={{ opacity }}>
       <div className={styles.linkIcon}>
         <FaLink />
       </div>
@@ -15,13 +25,15 @@ const LinkItem = ({ link, onEdit, onDelete }) => {
         </a>
         <span>Link</span>
       </div>
-      <div className={styles.linkActions}>
-        <FaEllipsisV />
-        <div className={styles.dropdown}>
-          <p onClick={onEdit}>Edit</p>
-          <p onClick={onDelete}>Delete</p>
+      {!isPartOfModule && (
+        <div className={styles.linkActions}>
+          <FaEllipsisV />
+          <div className={styles.dropdown}>
+            <p onClick={onEdit}>Edit</p>
+            <p onClick={onDelete}>Delete</p>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

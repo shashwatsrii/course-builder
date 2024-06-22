@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import Header from '../Header/Header';
 import Module from '../Module/Module';
 import Resource from '../Resource/Resource';
@@ -16,7 +18,7 @@ function Landing() {
     const [modalMode, setModalMode] = useState('add');
 
     const handleCreateModule = (moduleName) => {
-        setModules([...modules, { id: Date.now(), name: moduleName, resources: [] }]);
+        setModules([...modules, { id: Date.now(), name: moduleName, resources: [], links: [] }]);
     };
 
     const handleEditModule = (id, newName) => {
@@ -77,59 +79,82 @@ function Landing() {
         setLinkModalOpen(true);
     };
 
+    const moveItemToModule = (itemId, itemType, moduleId) => {
+        if (itemType === 'resource') {
+            const resource = resources.find(resource => resource.id === itemId);
+            setResources(resources.filter(resource => resource.id !== itemId));
+            setModules(modules.map(module => 
+                module.id === moduleId 
+                ? { ...module, resources: [...module.resources, resource] }
+                : module
+            ));
+        } else if (itemType === 'link') {
+            const link = links.find(link => link.id === itemId);
+            setLinks(links.filter(link => link.id !== itemId));
+            setModules(modules.map(module => 
+                module.id === moduleId 
+                ? { ...module, links: [...module.links, link] }
+                : module
+            ));
+        }
+    };
+
     return (
-        <div className={styles.Landing}>
-            <Header
-                onCreateModule={handleCreateModule}
-                onUpload={handleUpload}
-                onAddLink={openAddLinkModal}
-            />
-            <div className={styles.content}>
-                {modules.length === 0 && resources.length === 0 && links.length === 0 ? (
-                    <div className={styles.emptyState}>
-                        <img src={box} alt="Empty state" />
-                        <h2>Nothing added here yet</h2>
-                        <p>Click on the [+] Add button to add items to this course</p>
-                    </div>
-                ) : (
-                    <>
-                        {modules.map((module) => (
-                            <Module
-                                key={module.id}
-                                module={module}
-                                onEditModule={handleEditModule}
-                                onDeleteModule={handleDeleteModule}
-                            />
-                        ))}
-                        {resources.map((resource) => (
-                            <Resource
-                                key={resource.id}
-                                resource={resource}
-                                onRename={handleRenameResource}
-                                onDownload={handleDownloadResource}
-                                onDelete={handleDeleteResource}
-                            />
-                        ))}
-                        {links.map((link) => (
-                            <LinkItem
-                                key={link.id}
-                                link={link}
-                                onEdit={() => openEditLinkModal(link)}
-                                onDelete={() => handleDeleteLink(link.id)}
-                            />
-                        ))}
-                    </>
-                )}
+        <DndProvider backend={HTML5Backend}>
+            <div className={styles.Landing}>
+                <Header
+                    onCreateModule={handleCreateModule}
+                    onUpload={handleUpload}
+                    onAddLink={openAddLinkModal}
+                />
+                <div className={styles.content}>
+                    {modules.length === 0 && resources.length === 0 && links.length === 0 ? (
+                        <div className={styles.emptyState}>
+                            <img src={box} alt="Empty state" />
+                            <h2>Nothing added here yet</h2>
+                            <p>Click on the [+] Add button to add items to this course</p>
+                        </div>
+                    ) : (
+                        <>
+                            {modules.map((module) => (
+                                <Module
+                                    key={module.id}
+                                    module={module}
+                                    onEditModule={handleEditModule}
+                                    onDeleteModule={handleDeleteModule}
+                                    moveItemToModule={moveItemToModule}
+                                />
+                            ))}
+                            {resources.map((resource) => (
+                                <Resource
+                                    key={resource.id}
+                                    resource={resource}
+                                    onRename={handleRenameResource}
+                                    onDownload={handleDownloadResource}
+                                    onDelete={handleDeleteResource}
+                                />
+                            ))}
+                            {links.map((link) => (
+                                <LinkItem
+                                    key={link.id}
+                                    link={link}
+                                    onEdit={() => openEditLinkModal(link)}
+                                    onDelete={() => handleDeleteLink(link.id)}
+                                />
+                            ))}
+                        </>
+                    )}
+                </div>
+                <AddLinkModal
+                    isOpen={linkModalOpen}
+                    onRequestClose={() => setLinkModalOpen(false)}
+                    onSubmit={modalMode === 'add' ? handleAddLink : (link) => handleEditLink(currentLink.id, link)}
+                    initialUrl={currentLink ? currentLink.url : ''}
+                    initialDisplayName={currentLink ? currentLink.displayName : ''}
+                    mode={modalMode}
+                />
             </div>
-            <AddLinkModal
-                isOpen={linkModalOpen}
-                onRequestClose={() => setLinkModalOpen(false)}
-                onSubmit={modalMode === 'add' ? handleAddLink : (link) => handleEditLink(currentLink.id, link)}
-                initialUrl={currentLink ? currentLink.url : ''}
-                initialDisplayName={currentLink ? currentLink.displayName : ''}
-                mode={modalMode}
-            />
-        </div>
+        </DndProvider>
     );
 }
 

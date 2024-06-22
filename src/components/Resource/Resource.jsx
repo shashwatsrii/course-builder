@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
+import { useDrag } from 'react-dnd';
 import { FaEllipsisV } from 'react-icons/fa';
-import { IoDocumentText } from 'react-icons/io5'; // Add an icon for PDF
+import { IoDocumentText } from 'react-icons/io5';
 import EditModuleModal from '../EditModule/EditModuleModal';
 import styles from './Resource.module.css';
 
-const Resource = ({ resource, onRename, onDownload, onDelete }) => {
+const Resource = ({ resource, onRename, onDownload, onDelete, isPartOfModule }) => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -22,16 +23,28 @@ const Resource = ({ resource, onRename, onDownload, onDelete }) => {
     setIsEditing(false);
   };
 
+  const [{ isDragging }, drag] = useDrag({
+    type: 'resource',
+    item: { id: resource.id, type: 'resource' },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  const opacity = isDragging ? 0.4 : 1;
+
   return (
-    <div className={styles.resource}>
-      <IoDocumentText className={styles.resourceIcon} /> {/* Icon for the resource */}
+    <div ref={!isPartOfModule ? drag : null} className={styles.resource} style={{ opacity }}>
+      <IoDocumentText className={styles.resourceIcon} />
       <div className={styles.resourceDetails}>
         <span className={styles.resourceName}>{resource.name}</span>
         <span className={styles.resourceType}>PDF</span>
       </div>
-      <button onClick={toggleDropdown} className={styles.kebabButton}>
-        <FaEllipsisV />
-      </button>
+      {!isPartOfModule && (
+        <button onClick={toggleDropdown} className={styles.kebabButton}>
+          <FaEllipsisV />
+        </button>
+      )}
       {dropdownVisible && (
         <div className={styles.dropdown}>
           <p onClick={handleRename}>Rename</p>
