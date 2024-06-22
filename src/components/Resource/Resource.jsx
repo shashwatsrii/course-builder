@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FaEllipsisV } from 'react-icons/fa';
+import { IoDocumentText } from 'react-icons/io5'; // Add an icon for PDF
 import EditModuleModal from '../EditModule/EditModuleModal';
 import styles from './Resource.module.css';
 
@@ -23,7 +24,11 @@ const Resource = ({ resource, onRename, onDownload, onDelete }) => {
 
   return (
     <div className={styles.resource}>
-      <span className={styles.resourceName}>{resource.name}</span>
+      <IoDocumentText className={styles.resourceIcon} /> {/* Icon for the resource */}
+      <div className={styles.resourceDetails}>
+        <span className={styles.resourceName}>{resource.name}</span>
+        <span className={styles.resourceType}>PDF</span>
+      </div>
       <button onClick={toggleDropdown} className={styles.kebabButton}>
         <FaEllipsisV />
       </button>
