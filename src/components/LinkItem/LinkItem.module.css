@@ -1,0 +1,71 @@
+/* src/components/LinkItem/LinkItem.module.css */
+.linkItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    background-color: #fff;
+  }
+  
+  .linkIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e0f7fa;
+    color: #007bff;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
+  
+  .linkInfo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .linkInfo a {
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+  }
+  
+  .linkInfo span {
+    color: #888;
+  }
+  
+  .linkActions {
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .linkActions .dropdown {
+    display: none;
+    position: absolute;
+    top: 20px;
+    right: 0;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+  }
+  
+  .linkActions:hover .dropdown {
+    display: block;
+  }
+  
+  .dropdown p {
+    margin: 0;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .dropdown p:hover {
+    background-color: #f0f0f0;
+  }
+  

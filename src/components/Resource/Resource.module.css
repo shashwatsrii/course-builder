@@ -1,0 +1,39 @@
+.resource {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  position: relative;
+}
+
+.resourceName {
+  flex-grow: 1;
+}
+
+.kebabButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: absolute;
+  right: 10px;
+  top: 30px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.dropdown p {
+  padding: 10px;
+  margin: 0;
+  cursor: pointer;
+}
+
+.dropdown p:hover {
+  background-color: #f0f0f0;
+}

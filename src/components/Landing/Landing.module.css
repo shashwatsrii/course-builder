@@ -1,26 +1,69 @@
+/* Landing.module.css */
 .Landing {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
 }
 
 .content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 80vh;
+  width: 100%;
+  max-width: 800px;
+  margin-top : 20px;
 }
 
 .emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
   text-align: center;
 }
 
+.module {
+  background: #fff;
+  margin: 10px 0;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.resource {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: 5px 0;
+}
+
+.resourceOptions {
+  display: flex;
+  gap: 10px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
 .emptyState img {
-  width: 200px;
+  width: 150px;
+  margin-bottom: 20px;
 }
 
 .emptyState h2 {
-  margin: 20px 0;
+  margin: 10px 0;
 }
 
 .emptyState p {
-  color: gray;
+  color: #888;
+}
+
+.link {
+  margin-bottom: 10px;
 }

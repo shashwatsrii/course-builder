@@ -6,21 +6,17 @@ import styles from './Module.module.css';
 const Module = ({ module, onEditModule, onDeleteModule }) => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  
+
   const toggleDropdown = () => {
     setDropdownVisible(!dropdownVisible);
   };
 
-  const openEditModal = () => {
+  const handleEdit = () => {
     setIsEditing(true);
     setDropdownVisible(false);
   };
 
-  const closeEditModal = () => {
-    setIsEditing(false);
-  };
-
-  const handleEdit = (newName) => {
+  const handleSave = (newName) => {
     onEditModule(module.id, newName);
     setIsEditing(false);
   };
@@ -34,18 +30,21 @@ const Module = ({ module, onEditModule, onDeleteModule }) => {
         </button>
         {dropdownVisible && (
           <div className={styles.dropdown}>
-            <p onClick={openEditModal}>Edit module name</p>
+            <p onClick={handleEdit}>Edit module name</p>
             <p onClick={() => onDeleteModule(module.id)}>Delete</p>
           </div>
         )}
       </div>
       <p>Add items to this module</p>
-      <EditModuleModal
-        isOpen={isEditing}
-        onRequestClose={closeEditModal}
-        onEdit={handleEdit}
-        initialName={module.name}
-      />
+      {isEditing && (
+        <EditModuleModal
+          isOpen={isEditing}
+          onRequestClose={() => setIsEditing(false)}
+          onEdit={handleSave}
+          initialName={module.name}
+          modalTitle="Edit Module"
+        />
+      )}
     </div>
   );
 };

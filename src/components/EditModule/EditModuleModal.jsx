@@ -4,19 +4,20 @@ import styles from './EditModuleModal.module.css';
 
 Modal.setAppElement('#root');
 
-const EditModuleModal = ({ isOpen, onRequestClose, onEdit, initialName }) => {
-    const [moduleName, setModuleName] = useState(initialName);
+const EditModuleModal = ({ isOpen, onRequestClose, onEdit, initialName, modalTitle }) => {
+    const [name, setName] = useState(initialName);
 
     useEffect(() => {
-        setModuleName(initialName);
+        setName(initialName);
     }, [initialName]);
 
     const handleEdit = () => {
-        if (moduleName.trim()) {
-            onEdit(moduleName);
+        if (name.trim()) {
+            onEdit(name);
             onRequestClose();
         }
     };
+
     return (
         <Modal
             isOpen={isOpen}
@@ -25,16 +26,16 @@ const EditModuleModal = ({ isOpen, onRequestClose, onEdit, initialName }) => {
             overlayClassName={styles.overlay}
         >
             <div className={styles.container}>
-                <h2>Edit module</h2>
+                <h2>{modalTitle}</h2>
                 <input
                     type="text"
-                    value={moduleName}
-                    onChange={(e) => setModuleName(e.target.value)}
-                    placeholder="Module name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Name"
                 />
                 <div className={styles.buttons}>
                     <button onClick={onRequestClose} className={styles.cancelButton}>Cancel</button>
-                    <button onClick={handleEdit} className={styles.createButton}>Edit</button>
+                    <button onClick={handleEdit} className={styles.createButton}>Save Changes</button>
                 </div>
             </div>
         </Modal>
